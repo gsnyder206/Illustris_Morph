@@ -24,6 +24,7 @@ individual_halo_parameter: creates histograms of the qualities of the subpopulat
 intrinsic_projected_axisratios: directly compares a projected axis ratio to an intrinsic distribution for a population of simulated spheroidal, disk-like, and elongated galaxies
 median: plots the evolution of the median of the 1/elongation
 medianerror: uses bootstrap to create errors for the median of elongation for the whole population of Illustris galaxies
+machinelearning: code modified from original used to run Illustris data; needs _int_.py and a data folder (all of which are on Mike's github)
 random_subpop: chooses 100 random galaxies from Illustris
 selecting_subhalos: displays galaxies that have certain parameters to choose from to create a subpopulation of galaxies for galfit
 subpopulation_params: gives the inverse of elongation for the subpopulation for galfit
