@@ -248,6 +248,7 @@ class randomForest:
         test = testDF[cols].values
         labels = trainDF[traininglabel]
 
+        #RF training doesn't use DF directly here if not given explicit train and test sets
         clrf = RandomForestClassifier(n_jobs=2,n_estimators=n_estimators,max_leaf_nodes=max_leaf_nodes,oob_score=True,max_features=max_features)
         #Create random forest instance #
 
@@ -262,6 +263,8 @@ class randomForest:
         self.reallabels = testDF[traininglabel]
         self.pred_proba = pred_proba
 
+
+        #now, apply results to entire DF after using train and test sets to create RF classifier
         self.allPredicitions = array(clrf.predict(df[cols]))
         self.allPredicitions_prob = array(clrf.predict_proba(df[cols]))
 

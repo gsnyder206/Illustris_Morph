@@ -137,7 +137,8 @@ result, labels, label_probability = pyml.randomForestMC(df,iterations=1000)
 #label_probability = probability of label following random forest (N galaxies x N iterations)
 
 #saves the output as a file
-result.to_pickle('/Users/aquirk/Desktop/result_cut_PC_{}_{}_{}.pkl'.format(C,z,F))
-labels.to_pickle('/Users/aquirk/Desktop/labels_cut_PC_{}_{}_{}.pkl'.format(C,z,F))
-label_probability.to_pickle('/Users/aquirk/Desktop/label_probability_cut_PC_{}_{}_{}.pkl'.format(C,z,F))
-PCs.to_pickle('/Users/aquirk/Desktop/pc_cut_{}_{}_{}.pkl'.format(C,z,F))
+df.to_pickle('data_cut_PC_{}_{}_{}.pkl'.format(C,z,F))
+result.to_pickle('result_cut_PC_{}_{}_{}.pkl'.format(C,z,F))
+labels.to_pickle('labels_cut_PC_{}_{}_{}.pkl'.format(C,z,F))
+label_probability.to_pickle('label_probability_cut_PC_{}_{}_{}.pkl'.format(C,z,F))
+PCs.to_pickle('pc_cut_{}_{}_{}.pkl'.format(C,z,F))
