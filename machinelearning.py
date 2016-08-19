@@ -237,7 +237,7 @@ class randomForest:
 
         if cols == None:
             #cols = ['g','m20','mprime','i','d','a','c','gr_col','f_gm20','logMass','ssfr']
-            cols = ['GINI','M20','ASYM','MID1_MPRIME','MID1_DSTAT','MID1_ISTAT','CC', 'PC1', 'PC2', 'PC3', 'PC4','PC5', 'PC6', 'PC7'] #,'mergerFlag']
+            cols = ['GINI','M20','ASYM','MID1_MPRIME','MID1_DSTAT','MID1_ISTAT','CC', 'FgM20', 'DgM20', 'PC1', 'PC2', 'PC3', 'PC4','PC5', 'PC6', 'PC7'] #,'mergerFlag']
 
         
         if trainDF==None or testDF==None:
@@ -320,7 +320,7 @@ def randomForestMC(df,iterations=1000, thresh=0.4, n_estimators=500,max_leaf_nod
     rf_mc_df = pd.DataFrame(d)
 
     if cols == None:
-        cols = ['GINI','M20','ASYM','MID1_MPRIME','MID1_DSTAT','MID1_ISTAT','CC','PC1', 'PC2', 'PC3', 'PC4', 'PC5', 'PC6', 'PC7']
+        cols = ['GINI','M20','ASYM','MID1_MPRIME','MID1_DSTAT','MID1_ISTAT','CC', 'FgM20', 'DgM20', 'PC1', 'PC2', 'PC3', 'PC4', 'PC5', 'PC6', 'PC7']
 
     import numpy as np
     summaryStatsIters = {'completeness': np.zeros(iterations), 'specificity': np.zeros(iterations),'risk':np.zeros(iterations),\

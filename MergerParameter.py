@@ -5,7 +5,7 @@ from matplotlib.colors import LogNorm
 
 #sets parameters for the code
 snap='snapshot_068'
-restfilt='WFC3-F160W' #rest frame lambda that all z's share- red or blue
+restfilt='NC-F115W' #rest frame lambda that all z's share- red or blue
 parameter1='ASYM'
 parameter2='GINI'
 
@@ -31,7 +31,7 @@ SFR=morph_catalog['nonparmorphs'][snap]['SFR_Msunperyr'].value
 PIX_AS=morph_catalog['nonparmorphs'][snap][restfilt]['CAMERA0']['PIX_ARCSEC'].value
 
 #reads in merger info for a given z
-NM=merg_catalog['mergerinfo'][snap]['latest_NumMinorMergersLastGyr'].value
+NM=merg_catalog['mergerinfo'][snap]['latest_NumMajorMergersLastGyr'].value
 
 #reads in RP and magnitude data
 mag_0=morph_catalog['nonparmorphs'][snap][restfilt]['CAMERA0']['MAG'].value
@@ -130,7 +130,7 @@ NumMergers_cut=[]
 V1_cut=[]
 V2_cut=[]
 for i in range(len(M)):
-	if (10**10.5)>M[i]:# and (3*PSF[0])<(R[i]*PIX_AS[0]) and 5<S[i] and 23>Mag[i]:
+	if (10**10.5)<M[i] and (3*PSF[0])<(R[i]*PIX_AS[0]) and 5<S[i] and 23>Mag[i]:
 		NumMergers_cut.append(NumMergers[i])
 		V1_cut.append(V1[i])
 		V2_cut.append(V2[i])
@@ -148,10 +148,16 @@ columndiff=columns[1]-columns[0]
 for i in range(len(rows)-1):
         for j in range(len(columns)-1):
                 cell=[]
+		number=[]
                 for k in range(len(V1_cut)):
                         if rows[i]<=V2_cut[k] and (rows[i]+rowdiff)>V2_cut[k] and columns[j]<=V1_cut[k] and (columns[j]+columndiff)>V1_cut[k]:
-                                cell.append(NumMergers_cut[k])
-                        data[i,j]=np.mean(cell)
+                                number.append(NumMergers_cut[k])
+				if NumMergers_cut[k]!=0:
+					cell.append(NumMergers_cut[k])
+                        if len(number)==0:
+				data[i,j]=0
+			if len(number)!=0:
+				data[i,j]=(float(len(cell))/len(number))
 
 #THIS ASSUMES ZERO IS IN THE TOP LEFT CORNER if you want it in the bottom left corner, invert the y axis
 
@@ -170,4 +176,4 @@ plt.gca().invert_yaxis() #only for M20 or only not for M20 if 3D
 plt.title('z=2 WFC3-F160W')
 plt.colorbar()
 #plt.show()
-plt.savefig('/Users/aquirk/Desktop/3Dasym_gini_multicut_160.png')
+plt.savefig('/Users/aquirk/Desktop/3Dasym_gini_multicut_115.png')

@@ -4,12 +4,12 @@ from PyML import machinelearning as pyml
 import numpy as np
 
 #need to pick a snapshot, filter, and camera
-snapshot='snapshot_103'
-filt='WFC3-F105W'
+snapshot='snapshot_068'
+filt='NC-F115W'
 camera='CAMERA0'
 #for file saving
-z=0.5
-F=105
+z=2
+Filter=115
 C=0
 
 #data files
@@ -63,7 +63,19 @@ for i in range(len(gini)):
 		if num_merg[i]!=0:
 			num_merg_good.append(1)
 
- 
+#creates an array for F(M20, Gini) and d(M20, gini)
+Fgm20_good=[]
+Dgm20_good=[]
+for i in range(len(gini_good)):
+	F=(-0.693*m20_good[i])+(4.95*gini_good[i])-3.85
+	if gini_good[i]>= ((0.14*m20_good[i])+0.778):
+		Fgm20_good.append(abs(F))
+	if gini_good[i]< ((0.14*m20_good[i])+0.778):
+                Fgm20_good.append(-abs(F))
+	Dgm20_good.append(abs((-0.14*m20_good[i])-gini_good[i]+0.33)/(0.14))
+
+#print(len(Fgm20_good))
+#print(len(Dgm20_good))
 #print(len(gini_good), len(m20_good), len(asym_good), len(mprime_good), len(d_good), len(i_good), len(cc_good), len(num_merg_good))
 
 #creates cuts to limit the population
@@ -75,6 +87,8 @@ d_cut=[]
 i_cut=[]
 cc_cut=[]
 num_merg_cut=[]
+Fgm20_cut=[]
+Dgm20_cut=[]
 for i in range(len(gini_good)):
 	if (10**10.5)<mass_good[i] and (3*PSF[0])<(RP_good[i]*PIX_AS[0]) and 5<SFR_good[i] and 23>mag_good[i]:
 		gini_cut.append(gini_good[i])
@@ -85,7 +99,10 @@ for i in range(len(gini_good)):
 		i_cut.append(i_good[i])
 		cc_cut.append(cc_good[i])
 		num_merg_cut.append(num_merg_good[i])
+		Fgm20_cut.append(Fgm20_good[i])
+		Dgm20_cut.append(Dgm20_good[i])
 
+#print(len(Fgm20_cut), len(Dgm20_cut))	
 #print(len(gini_cut), len(m20_cut), len(asym_cut), len(mprime_cut), len(d_cut), len(i_cut), len(cc_cut), len(num_merg_cut))
 
 #does PC analysis
@@ -115,6 +132,8 @@ dict['MID1_MPRIME']=mprime_cut
 dict['MID1_DSTAT']=d_cut
 dict['MID1_ISTAT']=i_cut
 dict['CC']=cc_cut
+dict['FgM20']=Fgm20_cut
+dict['DgM20']=Dgm20_cut
 dict['mergerFlag']=num_merg_cut #the key must be mergerFlag
 dict['PC1']=PCs[0]
 dict['PC2']=PCs[1]
@@ -129,7 +148,7 @@ df=pandas.DataFrame(dict)
 #print(df)
 
 #for running random forest-- labels and order must match that in the machinelearning.py script
-cols=['GINI','M20','ASYM','MID1_MPRIME','MID1_DSTAT','MID1_ISTAT','CC', 'PC1', 'PC2', 'PC3', 'PC4', 'PC5', 'PC6', 'PC7']
+cols=['GINI','M20','ASYM','MID1_MPRIME','MID1_DSTAT','MID1_ISTAT','CC', 'FgM20', 'DgM20', 'PC1', 'PC2', 'PC3', 'PC4', 'PC5', 'PC6', 'PC7']
 
 result, labels, label_probability = pyml.randomForestMC(df,iterations=1000)
 #result = summary statistics, feature importances (N iterations x N statistics/importances)
@@ -137,8 +156,15 @@ result, labels, label_probability = pyml.randomForestMC(df,iterations=1000)
 #label_probability = probability of label following random forest (N galaxies x N iterations)
 
 #saves the output as a file
+<<<<<<< HEAD
 df.to_pickle('data_cut_PC_{}_{}_{}.pkl'.format(C,z,F))
 result.to_pickle('result_cut_PC_{}_{}_{}.pkl'.format(C,z,F))
 labels.to_pickle('labels_cut_PC_{}_{}_{}.pkl'.format(C,z,F))
 label_probability.to_pickle('label_probability_cut_PC_{}_{}_{}.pkl'.format(C,z,F))
 PCs.to_pickle('pc_cut_{}_{}_{}.pkl'.format(C,z,F))
+=======
+result.to_pickle('/Users/aquirk/Desktop/result_cut_PC_{}_{}_{}.pkl'.format(C,z,Filter))
+labels.to_pickle('/Users/aquirk/Desktop/labels_cut_PC_{}_{}_{}.pkl'.format(C,z,Filter))
+label_probability.to_pickle('/Users/aquirk/Desktop/label_probability_cut_PC_{}_{}_{}.pkl'.format(C,z,Filter))
+PCs.to_pickle('/Users/aquirk/Desktop/pc_cut_{}_{}_{}.pkl'.format(C,z,Filter))
+>>>>>>> upstream/master
